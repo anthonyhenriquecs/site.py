@@ -35,14 +35,13 @@ def main(pagina):
         #Criar o chat
         pagina.add(chat)
         #criar o campo de enviar mensagem
-        texto = f"{nome_usuario.value} entrou no chat"
-        chat.controls.append(ft.Text(texto))
         linha_mensagem = ft.Row(
             [campo_mensagem,botão_enviar]
         )
         pagina.add(linha_mensagem)
         #criar botao de enviar mensagem
-        print(nome_usuario.value)
+        texto = f"{nome_usuario.value} entrou no chat"
+        pagina.pubsub.all(texto)
         pagina.update()
     
     pop_up = ft.AlertDialog(open=False,
