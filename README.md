@@ -1,4 +1,5 @@
 # site.py
+
 import flet as ft
 
 def main(pagina):
@@ -8,11 +9,19 @@ def main(pagina):
     
     chat=ft.Column()
     
-    
+    def enviar_msg_tunel(informações):
+        chat.controls.append((ft.Text(informações)))
+        pagina.update()
+        
+    pagina.pubsub.subscribe(enviar_msg_tunel)
     
     def enviar_msg(evento):
+        #coloca o nome do usurario no chat
         texto_campo_mensagem = f"{nome_usuario.value}: {campo_mensagem.value}"
-        chat.controls.append((ft.Text(texto_campo_mensagem)))
+        pagina.pubsub.send_all(texto_campo_mensagem)
+        
+        #Limpa o campo mensagem
+        campo_mensagem.value=""
         pagina.update()
         
     campo_mensagem = ft.TextField(label=("Digite sua mensagem:"), on_submit=enviar_msg)    
@@ -26,6 +35,8 @@ def main(pagina):
         #Criar o chat
         pagina.add(chat)
         #criar o campo de enviar mensagem
+        texto = f"{nome_usuario.value} entrou no chat"
+        chat.controls.append(ft.Text(texto))
         linha_mensagem = ft.Row(
             [campo_mensagem,botão_enviar]
         )
@@ -50,4 +61,5 @@ def main(pagina):
     pagina.add(boatao_iniciar)
     pagina.add(texto)
 
-ft.app(main)
+#ft.app(main)
+ft.app(main, view=ft.WEB_BROWSER)
